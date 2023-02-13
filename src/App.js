@@ -1,6 +1,9 @@
 import TodoForm from "./components/TodoForm";
-import { useDispatch } from 'react-redux'
+import TodoItem from "./components/TodoItem";
+
+import { useDispatch, useSelector } from 'react-redux'
 import { addTodo } from './store/todos-reducer';
+
 import uuid from 'react-uuid';
 
 function App() {
@@ -11,13 +14,16 @@ function App() {
       ...values,
       id: uuid()
     }
-    
+
     dispatch(addTodo(todo))
   }
 
+  const todos = useSelector(state => state.todos.todos)
+
   return (
     <div className="App">
-        <TodoForm onSubmit={(values) => submitHandler(values)}/>
+        <TodoForm onSubmit={(values) => submitHandler(values)} />
+        { todos?.map(todo => <TodoItem title={todo.title} description={todo.description} key={todo.id} />) }
     </div>
   );
 }

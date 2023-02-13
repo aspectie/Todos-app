@@ -7,12 +7,12 @@ let TodoForm = props => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="Title">Title of todo</label>
-        <Field name="Title" component="input" type="text" />
+        <label htmlFor="title">Title of todo</label>
+        <Field name="title" component="input" type="text" />
       </div>
       <div>
-        <label htmlFor="Description">Description of todo</label>
-        <Field name="Description" component="input" type="text" />
+        <label htmlFor="description">Description of todo</label>
+        <Field name="description" component="input" type="text" />
       </div>
       <button type="submit">Add todo</button>
     </form>
