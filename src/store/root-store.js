@@ -1,14 +1,12 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 import { reducer as formReducer } from 'redux-form'
-import { todosReducer } from './todos-reducer';
+import todosReducer from './todos-reducer';
  
-const rootReducer = combineReducers({
-    form: formReducer,
-    todos: todosReducer
-})
-
 export const store = configureStore({
-    reducer: rootReducer
+    reducer: {
+        form: formReducer,
+        todos: todosReducer
+    }
 });
 
 window.rootStore = store;
