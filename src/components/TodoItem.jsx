@@ -2,9 +2,9 @@ import React from 'react'
 
 function TodoItem({ title, description }) {
   return (
-    <div>
-        <p>title: {title}</p>
-        <p>descr: {description}</p>
+    <div className="mb-3 p-2 w-1/3 border border-blue-300 rounded bg-blue-100">
+        <p className="mb-2">Title: {title}</p>
+        <p>Description: {description}</p>
     </div>
   )
 }
