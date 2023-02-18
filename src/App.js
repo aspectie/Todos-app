@@ -2,6 +2,7 @@ import TodoForm from "./components/TodoForm";
 import TodoItem from "./components/TodoItem";
 
 import { useDispatch, useSelector } from 'react-redux'
+import { reset } from 'redux-form'
 import { addTodo } from './store/todos-reducer';
 
 import uuid from 'react-uuid';
@@ -16,6 +17,7 @@ function App() {
     }
 
     dispatch(addTodo(todo))
+    dispatch(reset('todoForm'))
   }
 
   const todos = useSelector(state => state.todos.todos)
