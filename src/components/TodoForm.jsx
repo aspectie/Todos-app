@@ -18,27 +18,27 @@ let TodoForm = props => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Field 
+      <Field
         id="title"
-        name="title" 
+        name="title"
         component={renderField}
         type="text"
         label="Title of todo:"
-        className="block form-input" 
+        className="block form-input"
         validate={[required]}
       />
-      <Field 
-        id="description" 
-        name="description" 
+      <Field
+        id="description"
+        name="description"
         component={renderField}
-        type="text" 
+        type="text"
         label="Description of todo:"
-        className="block form-input" 
+        className="block form-input"
         validate={[required]}
       />
-      <button 
-        type="submit" 
-        className="p-2 rounded-lg bg-orange-300 text-white hover:bg-orange-400"
+      <button
+        type="submit"
+        className="p-2 rounded-lg bg-orange-400 text-white hover:bg-amber-500"
       >Add todo</button>
     </form>
   )
