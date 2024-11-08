@@ -14,9 +14,12 @@ import { addTodoThunk } from "../../store/todos-slice";
 import { reset } from "redux-form";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../..//store/root-store";
+import { useState } from "react";
 
 export function AddTodoDialog() {
   const dispatch: AppDispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+
   const submitHandler = ({ title }: { title: string }) => {
     const todo = {
       title,
@@ -26,10 +29,11 @@ export function AddTodoDialog() {
 
     dispatch(addTodoThunk(todo));
     dispatch(reset("todoForm"));
+    setOpen((prev) => !prev);
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="py-2 px-4 rounded-sm bg-amber-300 hover:bg-amber-200">
           Add todo
