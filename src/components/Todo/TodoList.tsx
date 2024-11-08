@@ -1,10 +1,11 @@
 import { TodoItem } from "./TodoItem";
-import { toggleTodoThunk } from "../../store/todos-reducer";
+import { Todo, toggleTodoThunk } from "../../store/todos-reducer";
 import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/root-store";
 
-export function TodoList({ todos }) {
-  const dispatch = useDispatch();
-  const onCheckedChange = (id) => {
+export function TodoList({ todos }: { todos: Todo[] }) {
+  const dispatch: AppDispatch = useDispatch();
+  const onCheckedChange = (id: number) => {
     dispatch(toggleTodoThunk(id));
   };
 

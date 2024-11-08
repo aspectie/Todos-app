@@ -6,8 +6,13 @@ export function TodosToolbar({
   onClickActive,
   onClickCompleted,
   activeButton,
+}: {
+  onClickAll: () => void;
+  onClickActive: () => void;
+  onClickCompleted: () => void;
+  activeButton: string;
 }) {
-  const classNames = (active) =>
+  const classNames = (active: string) =>
     cn("p-2 hover:bg-white", {
       "bg-white": activeButton === active,
     });

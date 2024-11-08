@@ -1,30 +1,37 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./root-store";
 
-interface Todo {
+export interface Todo {
   id: number;
   title: string;
   completed: boolean;
   userId: number;
 }
 
-export const fetchTodosThunk = createAsyncThunk(
-  "todos/fetchTodos",
-  async function (_, { rejectWithValue }) {
-    try {
-      const data = await fetch(
-        "https://jsonplaceholder.typicode.com/todos?_limit=10",
-      );
+export const fetchTodosThunk = createAsyncThunk<
+  Todo[],
+  void,
+  {
+    state: RootState;
+    rejectValue: string;
+  }
+>("todos/fetchTodos", async function (_, { rejectWithValue }) {
+  try {
+    const data = await fetch(
+      "https://jsonplaceholder.typicode.com/todos?_limit=10",
+    );
 
-      if (!data.ok) {
-        throw new Error("server error");
-      }
-      return await data.json();
-    } catch (e: any) {
+    if (!data.ok) {
+      throw new Error("server error");
+    }
+    return await data.json();
+  } catch (e: unknown) {
+    if (e instanceof Error) {
       return rejectWithValue(e.message);
     }
-  },
-);
+    return rejectWithValue("Unknown error");
+  }
+});
 
 export const toggleTodoThunk = createAsyncThunk<
   Todo,
@@ -60,8 +67,11 @@ export const toggleTodoThunk = createAsyncThunk<
       }
       dispatch(toggleTodoIsDone(id));
       return await data.json();
-    } catch (e: any) {
-      return rejectWithValue(e.message);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        return rejectWithValue(e.message);
+      }
+      return rejectWithValue("Unknown error");
     }
   },
 );
@@ -94,8 +104,11 @@ export const addTodoThunk = createAsyncThunk(
       dispatch(addTodo(newTodo));
 
       return newTodo;
-    } catch (e: any) {
-      return rejectWithValue(e.message);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        return rejectWithValue(e.message);
+      }
+      return rejectWithValue("Unknown error");
     }
   },
 );

@@ -13,9 +13,12 @@ const renderField = ({
 }: {
   id: string;
   input: any;
-  placeholder: any;
-  type: any;
-  meta: any;
+  placeholder: string;
+  type: string;
+  meta: {
+    touched: boolean;
+    error: string;
+  };
 }) => {
   return (
     <div className="mb-10">
@@ -24,7 +27,7 @@ const renderField = ({
         type={type}
         id={id}
         placeholder={placeholder}
-        className={cn("w-full", { "border-red-600": touched && error })}
+        className={cn("w-full", { "border-red-600": touched && error !== "" })}
       />
       {touched && error && <p className="text-red-600">{error}</p>}
     </div>

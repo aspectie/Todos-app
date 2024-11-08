@@ -1,26 +1,35 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTodosThunk } from "./store/todos-reducer";
+import { fetchTodosThunk, Todo } from "./store/todos-reducer";
+import { AppDispatch, RootState } from "./store/root-store";
 
 import { TodoList } from "./components/Todo/TodoList";
 import { TodosToolbar } from "./components/Todo/TodosToolbar";
 import { AddTodoDialog } from "./components/Todo/AddTodoDialog";
 
-function App() {
-  const dispatch = useDispatch();
-  const [filter, setFilter] = useState("all");
-  const [todos, setTodos] = useState([]);
+enum FilterType {
+  ACTIVE = "active",
+  COMPLETED = "completed",
+  ALL = "all",
+}
 
-  const allTodos = useSelector((state) => state.todos.todos);
+type TFilterType = (typeof FilterType)[keyof typeof FilterType];
+
+function App() {
+  const dispatch: AppDispatch = useDispatch();
+  const [filter, setFilter] = useState<FilterType>(FilterType.ALL);
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  const allTodos = useSelector((state: RootState) => state.todos.todos);
   const selectNewTodos = createSelector(
-    [(state) => state.todos],
+    [(state: RootState) => state.todos],
     ({ todos }) => {
       return todos.filter((t) => !t.completed);
     },
   );
   const selectDoneTodos = createSelector(
-    [(state) => state.todos],
+    [(state: RootState) => state.todos],
     ({ todos }) => {
       return todos.filter((t) => t.completed);
     },
@@ -29,8 +38,8 @@ function App() {
   const newTodos = useSelector(selectNewTodos);
   const doneTodos = useSelector(selectDoneTodos);
 
-  const filterTodos = (filter) => {
-    const filterMap = {
+  const filterTodos = (filter: TFilterType) => {
+    const filterMap: Record<FilterType, () => void> = {
       active: () => setTodos([...newTodos]),
       completed: () => setTodos([...doneTodos]),
       all: () => setTodos([...allTodos]),
@@ -55,9 +64,9 @@ function App() {
         <AddTodoDialog />
       </div>
       <TodosToolbar
-        onClickAll={() => setFilter("all")}
-        onClickActive={() => setFilter("active")}
-        onClickCompleted={() => setFilter("completed")}
+        onClickAll={() => setFilter(FilterType.ALL)}
+        onClickActive={() => setFilter(FilterType.ACTIVE)}
+        onClickCompleted={() => setFilter(FilterType.COMPLETED)}
         activeButton={filter}
       />
       {todos.length > 0 && (
