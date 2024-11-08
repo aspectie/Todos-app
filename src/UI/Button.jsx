@@ -1,9 +1,7 @@
-import React from 'react'
-
-function Button(props) {
+export function Button({ clickHandler, children, ...props }) {
   return (
-    <button {...props} onClick={props.clickHandler}>{props.children}</button>
-  )
+    <button onClick={clickHandler} {...props}>
+      {children}
+    </button>
+  );
 }
-
-export default Button

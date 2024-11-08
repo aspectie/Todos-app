@@ -1,26 +1,28 @@
-import React from 'react'
-import Button from '../UI/Button'
+import { useRef } from "react";
+import { cn } from "../lib/utils";
 
-import { useDispatch } from 'react-redux'
-import {toggleTodo} from '../store/todos-reducer'
+import { Checkbox } from "../UI/CheckBox";
 
+export function TodoItem({ title, id, completed, toggleHandler }) {
+  const checkBoxRef = useRef(null);
 
-const onTodoComplete = (dispatch, id) => {
-  dispatch(toggleTodo(id))
-}
-
-function TodoItem({ title, description, id, completed }) {
-  const dispatch = useDispatch();
   return (
-    <div className="mb-3 pt-2 w-1/3 border border-blue-300 rounded bg-blue-100">
-        <p className="mb-2 px-2">Title: {title}</p>
-        <p className='mb-2 px-2'>Description: {description}</p>
-        <Button
-            className={`${completed ? 'bg-orange-300 hover:bg-amber-500' : 'bg-amber-500 hover:bg-orange-400'} w-full p-2 rounded-b`}
-            clickHandler={() => onTodoComplete(dispatch, id)}
-        >{completed ? 'Undone' : 'Done'}</Button>
+    <div className="p-2 mb-3 last:mb-0 w-full border rounded flex items-center">
+      <Checkbox
+        ref={checkBoxRef}
+        id={id}
+        checked={completed}
+        onCheckedChange={toggleHandler}
+      />
+      <label
+        htmlFor={id}
+        className={cn(
+          "px-2 w-full text-lg first-letter:uppercase hover:cursor-pointer",
+          { "line-through": completed },
+        )}
+      >
+        {title}
+      </label>
     </div>
-  )
+  );
 }
-
-export default TodoItem
