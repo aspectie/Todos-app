@@ -1,13 +1,11 @@
-import uuid from "react-uuid";
 import { createSelector } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { reset } from "redux-form";
-import { addTodoThunk, fetchTodosThunk } from "./store/todos-reducer";
+import { fetchTodosThunk } from "./store/todos-reducer";
 
-import { AddTodoForm } from "./components/Todo/AddTodoForm";
 import { TodoList } from "./components/Todo/TodoList";
 import { TodosToolbar } from "./components/Todo/TodosToolbar";
+import { AddTodoDialog } from "./components/Todo/AddTodoDialog";
 
 function App() {
   const dispatch = useDispatch();
@@ -50,22 +48,11 @@ function App() {
     filterTodos(filter);
   }, [filter, allTodos]);
 
-  const submitHandler = ({ title }) => {
-    let todo = {
-      title,
-      isDone: false,
-      id: uuid(),
-    };
-
-    dispatch(addTodoThunk(todo));
-    dispatch(reset("todoForm"));
-  };
-
   return (
     <div className="flex flex-col w-3/4 m-auto p-5 bg-neutral-100 min-h-screen">
       <h1 className="py-5 text-2xl border-b">Todo Application</h1>
       <div className="py-5 mb-6 border-b">
-        <AddTodoForm onSubmit={(values) => submitHandler(values)} />
+        <AddTodoDialog />
       </div>
       <TodosToolbar
         onClickAll={() => setFilter("all")}

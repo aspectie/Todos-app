@@ -1,4 +1,12 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "./root-store";
+
+interface Todo {
+  id: number;
+  title: string;
+  completed: boolean;
+  userId: number;
+}
 
 export const fetchTodosThunk = createAsyncThunk(
   "todos/fetchTodos",
@@ -12,17 +20,28 @@ export const fetchTodosThunk = createAsyncThunk(
         throw new Error("server error");
       }
       return await data.json();
-    } catch (e) {
+    } catch (e: any) {
       return rejectWithValue(e.message);
     }
   },
 );
 
-export const toggleTodoThunk = createAsyncThunk(
+export const toggleTodoThunk = createAsyncThunk<
+  Todo,
+  number,
+  {
+    state: RootState;
+    rejectValue: string;
+  }
+>(
   "todos/toggleTodo",
   async function (id, { dispatch, rejectWithValue, getState }) {
-    const todo = getState().todos.todos.find((todo) => todo.id === id);
     try {
+      const todo = getState().todos.todos.find((todo) => todo.id === id);
+
+      if (!todo) {
+        return rejectWithValue("no todo found");
+      }
       const data = await fetch(
         `https://jsonplaceholder.typicode.com/todos/${id}`,
         {
@@ -41,7 +60,7 @@ export const toggleTodoThunk = createAsyncThunk(
       }
       dispatch(toggleTodoIsDone(id));
       return await data.json();
-    } catch (e) {
+    } catch (e: any) {
       return rejectWithValue(e.message);
     }
   },
@@ -49,7 +68,12 @@ export const toggleTodoThunk = createAsyncThunk(
 
 export const addTodoThunk = createAsyncThunk(
   "todos/addTodo",
-  async function (todo, { dispatch, rejectWithValue, getState }) {
+  async function (
+    todo: {
+      title: string;
+    },
+    { dispatch, rejectWithValue },
+  ) {
     try {
       const data = await fetch(`https://jsonplaceholder.typicode.com/todos`, {
         method: "POST",
@@ -70,19 +94,25 @@ export const addTodoThunk = createAsyncThunk(
       dispatch(addTodo(newTodo));
 
       return newTodo;
-    } catch (e) {
+    } catch (e: any) {
       return rejectWithValue(e.message);
     }
   },
 );
 
-const initialState = {
+interface TodosState {
+  todos: Todo[];
+  status: "loading" | "fulfilled" | "rejected" | null;
+  error: string | null;
+}
+
+const initialState: TodosState = {
   todos: [],
   status: null,
   error: null,
 };
 
-const setError = (state, action) => {
+const setError = (state: TodosState, action: PayloadAction<any>) => {
   state.status = "rejected";
   state.error = action.payload;
 };
