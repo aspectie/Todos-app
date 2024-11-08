@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTodosThunk, Todo } from "./store/todos-reducer";
+import { fetchTodosThunk, Todo } from "./store/todos-slice";
 import { AppDispatch, RootState } from "./store/root-store";
 
 import { TodoList } from "./components/Todo/TodoList";

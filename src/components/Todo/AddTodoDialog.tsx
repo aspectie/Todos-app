@@ -10,7 +10,7 @@ import {
 import { Button } from "../../UI/Button";
 import AddTodoForm from "./AddTodoForm";
 import uuid from "react-uuid";
-import { addTodoThunk } from "../../store/todos-reducer";
+import { addTodoThunk } from "../../store/todos-slice";
 import { reset } from "redux-form";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../..//store/root-store";

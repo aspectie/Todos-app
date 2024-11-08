@@ -1,5 +1,5 @@
 import { TodoItem } from "./TodoItem";
-import { Todo, toggleTodoThunk } from "../../store/todos-reducer";
+import { Todo, toggleTodoThunk } from "../../store/todos-slice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/root-store";
 

@@ -113,13 +113,13 @@ export const addTodoThunk = createAsyncThunk(
   },
 );
 
-interface TodosState {
+export interface TodosState {
   todos: Todo[];
   status: "loading" | "fulfilled" | "rejected" | null;
   error: string | null;
 }
 
-const initialState: TodosState = {
+export const initialState: TodosState = {
   todos: [],
   status: null,
   error: null,
@@ -163,6 +163,6 @@ const todosSlice = createSlice({
   },
 });
 
-const { addTodo, toggleTodoIsDone } = todosSlice.actions;
+export const { addTodo, toggleTodoIsDone } = todosSlice.actions;
 
 export default todosSlice.reducer;
