@@ -1,5 +1,6 @@
 import { Form, Field } from "react-final-form";
 import { Button } from "../../UI/Button";
+import { cn } from "../../lib/utils";
 
 const required = (value: any) => (value ? undefined : "Required");
 
@@ -16,16 +17,14 @@ const renderField = ({
   type: any;
   meta: any;
 }) => {
-  let invalidClass = touched && error ? "border-red-600" : "";
-
   return (
-    <div className="mb-5">
+    <div className="mb-10">
       <input
         {...input}
         type={type}
         id={id}
         placeholder={placeholder}
-        className={invalidClass}
+        className={cn("w-full", { "border-red-600": touched && error })}
       />
       {touched && error && <p className="text-red-600">{error}</p>}
     </div>
@@ -52,9 +51,9 @@ const AddTodoForm = ({
           />
           <Button
             type="submit"
-            className="p-2 rounded-lg bg-amber-300 hover:bg-gray-100 "
+            className="p-2 rounded-sm bg-amber-300 hover:bg-gray-300 w-full"
           >
-            Add todo
+            Add
           </Button>
         </form>
       )}

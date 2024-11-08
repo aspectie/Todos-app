@@ -3,6 +3,8 @@ import {
   DialogClose,
   DialogContent,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "../../UI/Dialog";
 import { Button } from "../../UI/Button";
@@ -29,15 +31,15 @@ export function AddTodoDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Add todo</Button>
+        <Button className="py-2 px-4 rounded-sm bg-amber-300 hover:bg-amber-200">
+          Add todo
+        </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md md:max-w-lg lg:max-w-xl bg-white p-8">
+        <DialogHeader>
+          <DialogTitle>Add new todo</DialogTitle>
+        </DialogHeader>
         <AddTodoForm handleSubmit={(values) => submitHandler(values)} />
-        <DialogFooter className="sm:justify-start">
-          <DialogClose asChild>
-            <Button>Close</Button>
-          </DialogClose>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

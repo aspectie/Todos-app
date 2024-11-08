@@ -51,7 +51,7 @@ function App() {
   return (
     <div className="flex flex-col w-3/4 m-auto p-5 bg-neutral-100 min-h-screen">
       <h1 className="py-5 text-2xl border-b">Todo Application</h1>
-      <div className="py-5 mb-6 border-b">
+      <div className="py-5 mb-2">
         <AddTodoDialog />
       </div>
       <TodosToolbar
