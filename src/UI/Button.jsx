@@ -1,6 +1,6 @@
-export function Button({ clickHandler, children, ...props }) {
+export function Button({ onClick, children, ...props }) {
   return (
-    <button onClick={clickHandler} {...props}>
+    <button onClick={onClick} {...props}>
       {children}
     </button>
   );

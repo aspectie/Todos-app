@@ -1,5 +1,5 @@
 import { Field, reduxForm } from "redux-form";
-import { Button } from "../UI/Button";
+import { Button } from "../../UI/Button";
 
 const required = (value) => (value ? undefined : "Required");
 
@@ -26,7 +26,7 @@ const renderField = ({
   );
 };
 
-export let TodoForm = (props) => {
+export let AddTodoForm = (props) => {
   const { handleSubmit } = props;
 
   return (
@@ -42,7 +42,7 @@ export let TodoForm = (props) => {
       />
       <Button
         type="submit"
-        className="p-2 rounded-lg bg-orange-400 text-white hover:bg-amber-500"
+        className="p-2 rounded-lg bg-amber-300 hover:bg-gray-100 "
       >
         Add todo
       </Button>
@@ -50,4 +50,4 @@ export let TodoForm = (props) => {
   );
 };
 
-TodoForm = reduxForm({ form: "todoForm" })(TodoForm);
+AddTodoForm = reduxForm({ form: "todoForm" })(AddTodoForm);

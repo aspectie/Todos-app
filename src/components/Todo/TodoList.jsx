@@ -1,5 +1,5 @@
 import { TodoItem } from "./TodoItem";
-import { toggleTodoThunk } from "../store/todos-reducer";
+import { toggleTodoThunk } from "../../store/todos-reducer";
 import { useDispatch } from "react-redux";
 
 export function TodoList({ todos }) {
