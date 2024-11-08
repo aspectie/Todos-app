@@ -1,11 +1,11 @@
 import { TodoItem } from "./TodoItem";
-import { toggleTodo } from "../store/todos-reducer";
+import { toggleTodoThunk } from "../store/todos-reducer";
 import { useDispatch } from "react-redux";
 
 export function TodoList({ todos }) {
   const dispatch = useDispatch();
   const onCheckedChange = (id) => {
-    dispatch(toggleTodo(id));
+    dispatch(toggleTodoThunk(id));
   };
 
   return todos && todos.length > 0 ? (

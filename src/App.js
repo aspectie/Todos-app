@@ -3,7 +3,7 @@ import { TodoList } from "./components/TodoList";
 
 import { useDispatch, useSelector } from "react-redux";
 import { reset } from "redux-form";
-import { addTodo, fetchTodos } from "./store/todos-reducer";
+import { addTodoThunk, fetchTodosThunk } from "./store/todos-reducer";
 
 import uuid from "react-uuid";
 import { createSelector } from "@reduxjs/toolkit";
@@ -13,17 +13,17 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchTodos());
-  }, []);
+    dispatch(fetchTodosThunk());
+  }, [dispatch]);
 
-  const submitHandler = (values) => {
+  const submitHandler = ({ title }) => {
     let todo = {
-      ...values,
+      title,
       isDone: false,
       id: uuid(),
     };
 
-    dispatch(addTodo(todo));
+    dispatch(addTodoThunk(todo));
     dispatch(reset("todoForm"));
   };
   const todos = useSelector((state) => state.todos.todos);

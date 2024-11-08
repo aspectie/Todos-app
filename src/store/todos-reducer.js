@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const fetchTodos = createAsyncThunk(
+export const fetchTodosThunk = createAsyncThunk(
   "todos/fetchTodos",
   async function (_, { rejectWithValue }) {
     try {
@@ -18,19 +18,17 @@ export const fetchTodos = createAsyncThunk(
   },
 );
 
-export const toggleTodo = createAsyncThunk(
+export const toggleTodoThunk = createAsyncThunk(
   "todos/toggleTodo",
   async function (id, { dispatch, rejectWithValue, getState }) {
     const todo = getState().todos.todos.find((todo) => todo.id === id);
     try {
       const data = await fetch(
-        `https://jsonplaceholder.typicode.com/posts/${id}`,
+        `https://jsonplaceholder.typicode.com/todos/${id}`,
         {
-          method: "PUT",
+          method: "PATCH",
           body: JSON.stringify({
-            id,
-            completed: todo.completed,
-            userId: 1,
+            completed: !todo.completed,
           }),
           headers: {
             "Content-type": "application/json; charset=UTF-8",
@@ -49,10 +47,44 @@ export const toggleTodo = createAsyncThunk(
   },
 );
 
+export const addTodoThunk = createAsyncThunk(
+  "todos/addTodo",
+  async function (todo, { dispatch, rejectWithValue, getState }) {
+    try {
+      const data = await fetch(`https://jsonplaceholder.typicode.com/todos`, {
+        method: "POST",
+        body: JSON.stringify({
+          title: todo.title,
+          completed: false,
+          userId: 1,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+
+      if (!data.ok) {
+        throw new Error("server error");
+      }
+      const newTodo = await data.json();
+      dispatch(addTodo(newTodo));
+
+      return newTodo;
+    } catch (e) {
+      return rejectWithValue(e.message);
+    }
+  },
+);
+
 const initialState = {
   todos: [],
   status: null,
   error: null,
+};
+
+const setError = (state, action) => {
+  state.status = "rejected";
+  state.error = action.payload;
 };
 
 const todosSlice = createSlice({
@@ -72,25 +104,22 @@ const todosSlice = createSlice({
       });
     },
   },
-  extraReducers: {
-    [fetchTodos.pending]: (state, action) => {
-      state.status = "loading";
-      state.error = null;
-    },
-    [fetchTodos.fulfilled]: (state, action) => {
-      state.status = "fulfilled";
-      state.todos = action.payload;
-    },
-    [fetchTodos.rejected]: (state, action) => {
-      state.status = "rejected";
-      state.error = action.payload;
-    },
-    [toggleTodo.rejected]: (state, action) => {
-      state.status = "rejected";
-      state.error = action.payload;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTodosThunk.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(fetchTodosThunk.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+        state.todos = action.payload;
+      })
+      .addCase(fetchTodosThunk.rejected, setError)
+      .addCase(addTodoThunk.rejected, setError)
+      .addCase(toggleTodoThunk.rejected, setError);
   },
 });
 
-export const { addTodo, toggleTodoIsDone } = todosSlice.actions;
+const { addTodo, toggleTodoIsDone } = todosSlice.actions;
+
 export default todosSlice.reducer;
